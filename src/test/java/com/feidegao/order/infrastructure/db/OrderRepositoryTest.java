@@ -44,6 +44,8 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
                 .tickets(List.of(TicketEntity.builder()
                         .flightNo("A111")
                         .invoiceRequest(InvoiceRequestEntity.builder().id("1").build())
+                                .amount(900f)
+                                .insuranceAmount(100f)
                         .id("2")
                         .build()))
                 .build());
@@ -55,6 +57,8 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
                                         .flightNo("A111")
                                         .id("2")
                                         .invoiceRequest(InvoiceRequest.builder().id("1").build())
+                                        .amount(900f)
+                                        .insuranceAmount(100f)
                                         .build()
                         )
                 )

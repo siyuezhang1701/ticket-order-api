@@ -16,4 +16,6 @@ public class TicketEntity {
     private String id;
     private String flightNo;
     private InvoiceRequestEntity invoiceRequest;
+    private float amount;
+    private float insuranceAmount;
 }
