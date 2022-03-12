@@ -57,4 +57,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the flight has not taken off"));
     }
+
+    @Test
+    void should_return_400_when_request_invoice_for_flight_which_already_has_invoice_request() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the invoice request has been made")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the invoice request has been made"));
+    }
 }
