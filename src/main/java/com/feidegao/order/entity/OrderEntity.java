@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @DynamoDBTable(tableName = "orders")
@@ -15,4 +17,6 @@ import lombok.NoArgsConstructor;
 public class OrderEntity {
     @DynamoDBHashKey
     private String id;
+
+    private List<TicketEntity> tickets;
 }
