@@ -35,4 +35,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the ticket is not existed"));
     }
+
+    @Test
+    void should_return_400_when_request_invoice_for_flight_which_is_in_flight() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the flight is in-flight")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the flight is in-flight"));
+    }
 }
