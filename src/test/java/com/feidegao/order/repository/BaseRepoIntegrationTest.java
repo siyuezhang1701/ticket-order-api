@@ -4,7 +4,12 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.BillingMode;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
 import com.feidegao.order.entity.DemoEntity;
+import com.feidegao.order.entity.OrderEntity;
+import org.junit.jupiter.api.AfterEach;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -12,16 +17,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @Testcontainers
 @Import({TestConfig.class, LocalStackConfig.class})
+@SpringBootTest
 public class BaseRepoIntegrationTest {
+    @Autowired
+    private DynamoDBMapper dynamoDBMapper;
+    @Autowired
+    private AmazonDynamoDB dynamoDB;
 
-
-    protected void createDemoTable(
-            DynamoDBMapper dynamoDBMapper,
-            AmazonDynamoDB dynamoDB
-    ) {
+    protected void createOrderTable() {
 
         CreateTableRequest createTableRequest = dynamoDBMapper.generateCreateTableRequest(
-                DemoEntity.class
+                OrderEntity.class
         );
         createTableRequest.setBillingMode(
                 BillingMode.PAY_PER_REQUEST.toString()
