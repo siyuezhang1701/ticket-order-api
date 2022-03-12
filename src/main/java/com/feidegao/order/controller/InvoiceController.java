@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @Controller
@@ -26,7 +27,7 @@ public class InvoiceController {
     public ResponseEntity<String> createInvoiceRequest(
             @PathVariable String orderId,
             @PathVariable String ticketId,
-            @RequestBody InvoiceRequestResource invoiceRequest
+            @RequestBody @Valid InvoiceRequestResource invoiceRequest
             ){
         try {
             invoiceService.requestInvoice(orderId, ticketId, invoiceRequest.getTitle());

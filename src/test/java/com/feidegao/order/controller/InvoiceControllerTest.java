@@ -111,4 +111,14 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string("MQ is unreachable"));
     }
+
+    @Test
+    void should_return_400_when_create_invoice_request_without_title() throws Exception {
+        doThrow(new MQMessageFailedException("MQ is unreachable")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"), eq("title"));
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest",
+                InvoiceRequestResource.builder().build()
+        )
+                .andExpect(status().isBadRequest());
+    }
 }

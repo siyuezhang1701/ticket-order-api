@@ -33,9 +33,8 @@ public class OrderRepositoryTest extends BaseIntegrationTest {
 
     @Test
     void should_return_null_when_order_is_not_found_by_id() {
-        dynamoDBMapper.save(OrderEntity.builder().id("notFoundId").build());
 
-        assertNull(orderRepository.getOrderById("1"));
+        assertNull(orderRepository.getOrderById("notFound"));
     }
 
     @Test
