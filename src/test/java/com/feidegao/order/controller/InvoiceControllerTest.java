@@ -68,4 +68,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the invoice request has been made"));
     }
+
+    @Test
+    void should_return_400_when_request_invoice_for_ticket_which_is_rebooked() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the ticket is rebooked")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the ticket is rebooked"));
+    }
 }
