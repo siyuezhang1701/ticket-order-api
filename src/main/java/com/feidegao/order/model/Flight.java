@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
-    private String id;
-    private String flightNo;
+public class Flight {
+    private FlightStatus status;
 }
