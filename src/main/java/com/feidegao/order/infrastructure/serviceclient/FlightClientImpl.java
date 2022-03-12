@@ -1,14 +1,14 @@
-package com.feidegao.order.infrastructure.client;
+package com.feidegao.order.infrastructure.serviceclient;
 
-import com.feidegao.order.client.FlightClient;
-import com.feidegao.order.infrastructure.client.mapper.FlightMapper;
-import com.feidegao.order.infrastructure.client.response.FlightResponse;
+import com.feidegao.order.serviceclient.FlightClient;
+import com.feidegao.order.infrastructure.serviceclient.mapper.FlightMapper;
+import com.feidegao.order.infrastructure.serviceclient.response.FlightResponse;
 import com.feidegao.order.model.Flight;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Service
+@Component
 public class FlightClientImpl implements FlightClient {
     private final RestTemplate restTemplate;
 

@@ -1,6 +1,8 @@
 package com.feidegao.order.service;
 
-import com.feidegao.order.client.FlightClient;
+import com.feidegao.order.mqclient.InvoiceQueueClient;
+import com.feidegao.order.repository.InvoiceRepository;
+import com.feidegao.order.serviceclient.FlightClient;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
 import com.feidegao.order.model.Order;
@@ -18,19 +20,22 @@ public class InvoiceService {
 
     private final OrderRepository orderRepository;
     private final ProposalRepository proposalRepository;
-
+    private final InvoiceQueueClient invoiceQueueClient;
     private final FlightClient flightClint;
+    private final InvoiceRepository invoiceRepository;
 
-    public InvoiceService(OrderRepository orderRepository, ProposalRepository proposalRepository, FlightClient flightClint) {
+    public InvoiceService(OrderRepository orderRepository, ProposalRepository proposalRepository, FlightClient flightClint, InvoiceQueueClient invoiceQueueClient, InvoiceRepository invoiceRepository) {
         this.orderRepository = orderRepository;
         this.proposalRepository = proposalRepository;
         this.flightClint = flightClint;
+        this.invoiceQueueClient = invoiceQueueClient;
+        this.invoiceRepository = invoiceRepository;
     }
 
     public String requestInvoice(
             String orderId,
-            String ticketId
-    ){
+            String ticketId,
+            String title){
         Order order = Optional.ofNullable(orderRepository.getOrderById(orderId))
                 .orElseThrow(() -> new InvalidInvoiceRequestException("the order is not existed"));
         Ticket ticket = order.getTickets().stream().filter(t -> t.getId().equals(ticketId)).findFirst().orElseThrow(
@@ -45,8 +50,10 @@ public class InvoiceService {
         if (Objects.nonNull(proposalRepository.getByOriginTicketId(ticketId))){
             throw new InvalidInvoiceRequestException("the ticket is rebooked");
         }
+        String callback = String.format("/orders/%s/tickets/%s/invoiceRequest/confirmation", ticketId, orderId);
+        invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceAmount(), callback);
 
-        return "";
+        return invoiceRepository.createInvoiceRequest(orderId, ticketId);
     }
 
     private void checkFlightStatus(String flightNo){

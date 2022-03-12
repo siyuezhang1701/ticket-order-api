@@ -13,4 +13,6 @@ public class Ticket {
     private String id;
     private String flightNo;
     private InvoiceRequest invoiceRequest;
+    private float amount;
+    private float insuranceAmount;
 }

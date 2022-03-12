@@ -1,16 +1,14 @@
-package com.feidegao.order.infrastructure.client;
+package com.feidegao.order.infrastructure.serviceclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.feidegao.order.infrastructure.client.FlightClientImpl;
-import com.feidegao.order.infrastructure.client.response.FlightResponse;
+import com.feidegao.order.infrastructure.serviceclient.response.FlightResponse;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;

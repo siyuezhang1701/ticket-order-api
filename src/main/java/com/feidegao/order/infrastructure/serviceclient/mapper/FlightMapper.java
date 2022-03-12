@@ -1,6 +1,6 @@
-package com.feidegao.order.infrastructure.client.mapper;
+package com.feidegao.order.infrastructure.serviceclient.mapper;
 
-import com.feidegao.order.infrastructure.client.response.FlightResponse;
+import com.feidegao.order.infrastructure.serviceclient.response.FlightResponse;
 import com.feidegao.order.model.Flight;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,4 +1,4 @@
-package com.feidegao.order.client;
+package com.feidegao.order.serviceclient;
 
 import com.feidegao.order.model.Flight;
 
