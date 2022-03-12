@@ -1,8 +1,10 @@
 package com.feidegao.order.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.feidegao.order.entity.InvoiceRequestEntity;
 import com.feidegao.order.entity.OrderEntity;
 import com.feidegao.order.entity.TicketEntity;
+import com.feidegao.order.model.InvoiceRequest;
 import com.feidegao.order.model.Order;
 import com.feidegao.order.model.Ticket;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +25,7 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
     private OrderRepository orderRepository;
 
     @BeforeEach
-   public void setUpData() {
+    public void setUpData() {
         createOrderTable();
     }
 
@@ -38,12 +40,23 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
     void should_return_order_with_tickets_info() {
         dynamoDBMapper.save(OrderEntity.builder()
                 .id("1")
-                        .tickets(List.of(TicketEntity.builder().flightNo("A111").id("2").build()))
+                .tickets(List.of(TicketEntity.builder()
+                        .flightNo("A111")
+                        .invoiceRequest(InvoiceRequestEntity.builder().id("1").build())
+                        .id("2")
+                        .build()))
                 .build());
 
         Order expect = Order.builder()
                 .id("1")
-                .tickets(List.of(Ticket.builder().flightNo("A111").id("2").build()))
+                .tickets(List.of(
+                                Ticket.builder()
+                                        .flightNo("A111")
+                                        .id("2")
+                                        .invoiceRequest(InvoiceRequest.builder().id("1").build())
+                                        .build()
+                        )
+                )
                 .build();
 
         assertEquals(expect, orderRepository.getOrderById("1"));

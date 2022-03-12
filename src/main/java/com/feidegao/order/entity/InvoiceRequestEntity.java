@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamoDBDocument
-public class TicketEntity {
+public class InvoiceRequestEntity {
 
     private String id;
-    private String flightNo;
-    private InvoiceRequestEntity invoiceRequest;
 }
