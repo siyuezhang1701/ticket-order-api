@@ -27,8 +27,7 @@ public class InvoiceQueueClientImpl implements InvoiceQueueClient {
     }
 
     @Override
-    public void pushRequest(String title, float amount, String callbak) {
-        try {
+    public void pushRequest(String title, float amount, String callbak) throws JsonProcessingException {
             SendMessageRequest sendMessageRequest = new SendMessageRequest()
                     .withQueueUrl(String.format("%s/%s", this.endpoint, QUEUE_NAME))
                     .withMessageBody(objectMapper.writeValueAsString(InvoiceMessage.builder()
@@ -37,8 +36,5 @@ public class InvoiceQueueClientImpl implements InvoiceQueueClient {
                             .amount(amount)
                             .build()));
             amazonSQS.sendMessage(sendMessageRequest);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
     }
 }

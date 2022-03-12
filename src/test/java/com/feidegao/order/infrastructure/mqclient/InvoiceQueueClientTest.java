@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InvoiceQueueClientTest extends BaseIntegrationTest {
 
@@ -38,6 +39,12 @@ class InvoiceQueueClientTest extends BaseIntegrationTest {
         ReceiveMessageResult receiveMessageResult = amazonSQS.receiveMessage(receiveMessageRequest);
         assertEquals(1, receiveMessageResult.getMessages().size());
         assertEquals("{\"amount\":1000.0,\"title\":\"title\",\"callback\":\"callbackUrl\"}",receiveMessageResult.getMessages().get(0).getBody());
+    }
 
+    @Test
+    void should_throw_exception_when_push_message_to_queue_failed(){
+        amazonSQS.deleteQueue(String.format("%s/%s", this.queueUrl, "invoice-queue.fifo"));
+
+        assertThrows(Exception.class, () -> invoiceQueueClient.pushRequest("title", 1000f, "callbackUrl"));
     }
 }
