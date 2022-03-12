@@ -3,6 +3,7 @@ package com.feidegao.order.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
+import com.feidegao.order.service.exception.MQMessageFailedException;
 import com.feidegao.order.serviceclient.FlightClient;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -162,6 +164,30 @@ public class InvoiceServiceTest {
         verify(invoiceQueueClient, times(1))
                 .pushRequest(eq("title"), eq(1000f), eq("/orders/1/tickets/1/invoiceRequest/confirmation"));
 
+        verify(invoiceRepository, times(1)).createInvoiceRequest(eq("1"), eq("1"));
 
+    }
+
+    @Test
+    void should_throw_exception_when_push_message_failed() throws JsonProcessingException {
+        Order order = Order.builder()
+                .id("1")
+                .tickets(List.of(
+                        Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceAmount(100).build()
+                ))
+                .build();
+        when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
+        when(proposalRepository.getByOriginTicketId(eq("1"))).thenReturn(null);
+
+        Flight flight = Flight.builder().status(FlightStatus.FINISH).build();
+        when(flightClint.getFlight(eq("CA111"))).thenReturn(flight);
+
+        doThrow(new RuntimeException("MQ is unreachable")).when(invoiceQueueClient).pushRequest(eq("title"), eq(1000f), eq("/orders/1/tickets/1/invoiceRequest/confirmation"));
+
+        MQMessageFailedException exception = assertThrows(MQMessageFailedException.class, () -> invoiceService.requestInvoice("1", "1", "title"));
+
+        assertEquals("MQ is unreachable", exception.getMessage());
+
+        verify(invoiceRepository, times(0)).createInvoiceRequest(eq("1"), eq("1"));
     }
 }
