@@ -46,4 +46,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the flight is in-flight"));
     }
+
+    @Test
+    void should_return_400_when_request_invoice_for_flight_which_has_not_taken_off() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the flight has not taken off")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the flight has not taken off"));
+    }
 }
