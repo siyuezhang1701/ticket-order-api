@@ -2,7 +2,7 @@ package com.feidegao.order.infrastructure.serviceclient;
 
 import com.feidegao.order.serviceclient.FlightClient;
 import com.feidegao.order.infrastructure.serviceclient.mapper.FlightMapper;
-import com.feidegao.order.infrastructure.serviceclient.response.FlightResponse;
+import com.feidegao.order.response.FlightResponse;
 import com.feidegao.order.model.Flight;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;

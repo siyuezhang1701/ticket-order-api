@@ -1,4 +1,4 @@
-package com.feidegao.order.infrastructure.serviceclient.response;
+package com.feidegao.order.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

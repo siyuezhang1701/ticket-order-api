@@ -2,7 +2,7 @@ package com.feidegao.order.infrastructure.serviceclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.feidegao.order.infrastructure.serviceclient.response.FlightResponse;
+import com.feidegao.order.response.FlightResponse;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
 import org.junit.Test;

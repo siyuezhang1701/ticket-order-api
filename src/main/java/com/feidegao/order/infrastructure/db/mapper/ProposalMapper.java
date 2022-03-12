@@ -1,6 +1,6 @@
 package com.feidegao.order.infrastructure.db.mapper;
 
-import com.feidegao.order.infrastructure.db.entity.ProposalEntity;
+import com.feidegao.order.entity.ProposalEntity;
 import com.feidegao.order.model.Proposal;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

@@ -1,7 +1,7 @@
 package com.feidegao.order.infrastructure.db;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.feidegao.order.infrastructure.db.entity.ProposalEntity;
+import com.feidegao.order.entity.ProposalEntity;
 import com.feidegao.order.model.Proposal;
 import com.feidegao.order.repository.ProposalRepository;
 import org.junit.jupiter.api.BeforeEach;
