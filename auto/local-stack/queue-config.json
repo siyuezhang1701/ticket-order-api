@@ -1,0 +1,4 @@
+{
+  "ReceiveMessageWaitTimeSeconds": 3,
+  "FifoQueue": true
+}

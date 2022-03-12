@@ -1,0 +1,2 @@
+dynamodb:
+  endpoint_url: http://localstack:4566
