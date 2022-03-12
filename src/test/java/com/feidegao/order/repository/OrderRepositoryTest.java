@@ -1,6 +1,5 @@
 package com.feidegao.order.repository;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.feidegao.order.entity.OrderEntity;
 import org.junit.jupiter.api.BeforeEach;

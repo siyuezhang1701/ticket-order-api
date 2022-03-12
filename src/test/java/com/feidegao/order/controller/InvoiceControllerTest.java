@@ -24,4 +24,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the order is not existed"));
     }
+
+    @Test
+    void should_return_400_when_request_invoice_for_not_existed_ticket() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the ticket is not existed")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the ticket is not existed"));
+    }
 }
