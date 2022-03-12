@@ -1,5 +1,6 @@
 package com.feidegao.order.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
 import com.feidegao.order.serviceclient.FlightClient;
@@ -141,7 +142,7 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    void should_return_invoice_request_when_create_successfully() {
+    void should_return_invoice_request_when_create_successfully() throws JsonProcessingException {
         Order order = Order.builder()
                 .id("1")
                 .tickets(List.of(

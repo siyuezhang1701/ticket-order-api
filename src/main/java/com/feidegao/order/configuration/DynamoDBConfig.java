@@ -20,14 +20,15 @@ public class DynamoDBConfig {
     @Bean
     @Profile("local")
     public AmazonDynamoDB localDynamoDB(
-            @Value("${dynamodb.endpoint_url}") String dynamodbEndpoint
+            @Value("${dynamodb.endpoint_url}") String dynamodbEndpoint,
+            @Value("${aws.region}") String region
     ) {
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
                         new AwsClientBuilder.EndpointConfiguration(
                                 dynamodbEndpoint,
-                                Regions.AP_SOUTHEAST_2.getName()
+                                region
                         )
                 )
                 .withCredentials(

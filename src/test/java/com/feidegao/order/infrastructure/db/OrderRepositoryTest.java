@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.feidegao.order.entity.InvoiceRequestEntity;
 import com.feidegao.order.entity.OrderEntity;
 import com.feidegao.order.entity.TicketEntity;
+import com.feidegao.order.infrastructure.BaseIntegrationTest;
 import com.feidegao.order.model.InvoiceRequest;
 import com.feidegao.order.model.Order;
 import com.feidegao.order.model.Ticket;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class OrderRepositoryTest extends BaseRepoIntegrationTest {
+public class OrderRepositoryTest extends BaseIntegrationTest {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 

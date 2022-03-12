@@ -1,2 +1,9 @@
 dynamodb:
   endpoint_url: http://localstack:4566
+
+aws:
+    region: ap-southeast-2
+    dynamodb:
+      endpoint_url: http://localstack:4566
+    sqs:
+      endpoint_url: http://localstack:4566/000000000000

@@ -1,5 +1,6 @@
 package com.feidegao.order.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
 import com.feidegao.order.serviceclient.FlightClient;
@@ -51,7 +52,11 @@ public class InvoiceService {
             throw new InvalidInvoiceRequestException("the ticket is rebooked");
         }
         String callback = String.format("/orders/%s/tickets/%s/invoiceRequest/confirmation", ticketId, orderId);
-        invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceAmount(), callback);
+        try {
+            invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceAmount(), callback);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return invoiceRepository.createInvoiceRequest(orderId, ticketId);
     }
