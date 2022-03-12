@@ -2,10 +2,13 @@ package com.feidegao.order.controller;
 
 import com.feidegao.order.service.InvoiceService;
 import com.feidegao.order.service.exception.InvalidInvoiceRequestException;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.net.URI;
 
 @Controller
 public class InvoiceController {
@@ -22,7 +25,7 @@ public class InvoiceController {
             @PathVariable String ticketId
     ){
         try {
-            return ResponseEntity.ok(invoiceService.requestInvoice(orderId, ticketId));
+            return ResponseEntity.created(URI.create(String.format("/ticketOrders/%s/tickets/%s/invoiceRequest", orderId, ticketId))).build();
         } catch (InvalidInvoiceRequestException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }

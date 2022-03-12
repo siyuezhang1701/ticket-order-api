@@ -7,7 +7,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class InvoiceControllerTest extends BaseControllerIntegrationTest{
@@ -78,5 +80,15 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
         )
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("the ticket is rebooked"));
+    }
+
+    @Test
+    void should_return_200_and_uri_when_request_invoice_for_ticket_successfully() throws Exception {
+        when(mockInvoiceService.requestInvoice(eq("1"), eq("1"))).thenReturn("1");
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest"
+        )
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/ticketOrders/1/tickets/1/invoiceRequest"));
     }
 }
