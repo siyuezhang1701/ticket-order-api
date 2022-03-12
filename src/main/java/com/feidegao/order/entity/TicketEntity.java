@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class TicketEntity {
 
     private String id;
+    private String flightNo;
 }

@@ -38,12 +38,12 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
     void should_return_order_with_tickets_info() {
         dynamoDBMapper.save(OrderEntity.builder()
                 .id("1")
-                        .tickets(List.of(TicketEntity.builder().id("2").build()))
+                        .tickets(List.of(TicketEntity.builder().flightNo("A111").id("2").build()))
                 .build());
 
         Order expect = Order.builder()
                 .id("1")
-                .tickets(List.of(Ticket.builder().id("2").build()))
+                .tickets(List.of(Ticket.builder().flightNo("A111").id("2").build()))
                 .build();
 
         assertEquals(expect, orderRepository.getOrderById("1"));
