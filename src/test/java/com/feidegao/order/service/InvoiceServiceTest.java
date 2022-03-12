@@ -3,6 +3,7 @@ package com.feidegao.order.service;
 import com.feidegao.order.client.FlightClient;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
+import com.feidegao.order.model.InvoiceRequest;
 import com.feidegao.order.model.Order;
 import com.feidegao.order.model.Ticket;
 import com.feidegao.order.repository.OrderRepository;
@@ -85,5 +86,22 @@ public class InvoiceServiceTest {
 
         InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
         assertEquals("the flight has not taken off", exception.getMessage());
+    }
+
+    @Test
+    void should_throw_exception_create_invoice_request_for_flight_which_already_has_invoice_request() {
+        Order order = Order.builder()
+                .id("1")
+                .tickets(List.of(
+                        Ticket.builder().id("1").flightNo("CA111").invoiceRequest(InvoiceRequest.builder().id("1").build()).build()
+                ))
+                .build();
+        when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
+
+        Flight flight = Flight.builder().status(FlightStatus.FINISH).build();
+        when(flightClint.getFlight(eq("CA111"))).thenReturn(flight);
+
+        InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
+        assertEquals("the invoice request has been made", exception.getMessage());
     }
 }

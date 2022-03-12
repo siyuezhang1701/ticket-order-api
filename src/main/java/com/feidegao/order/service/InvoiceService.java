@@ -9,6 +9,7 @@ import com.feidegao.order.repository.OrderRepository;
 import com.feidegao.order.service.exception.InvalidInvoiceRequestException;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,11 @@ public class InvoiceService {
                 () -> new InvalidInvoiceRequestException("the ticket is not existed")
         );
         checkFlightStatus(ticket.getFlightNo());
+
+        if (Objects.nonNull(ticket.getInvoiceRequest())){
+            throw new InvalidInvoiceRequestException("the invoice request has been made");
+        }
+
         return "";
     }
 

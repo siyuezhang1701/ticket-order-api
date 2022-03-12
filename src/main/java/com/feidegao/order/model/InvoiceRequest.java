@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
+public class InvoiceRequest {
     private String id;
-    private String flightNo;
-    private InvoiceRequest invoiceRequest;
 }
