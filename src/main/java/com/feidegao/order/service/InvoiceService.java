@@ -6,6 +6,7 @@ import com.feidegao.order.model.FlightStatus;
 import com.feidegao.order.model.Order;
 import com.feidegao.order.model.Ticket;
 import com.feidegao.order.repository.OrderRepository;
+import com.feidegao.order.repository.ProposalRepository;
 import com.feidegao.order.service.exception.InvalidInvoiceRequestException;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.Optional;
 public class InvoiceService {
 
     private final OrderRepository orderRepository;
+    private final ProposalRepository proposalRepository;
 
     private final FlightClient flightClint;
 
-    public InvoiceService(OrderRepository orderRepository, FlightClient flightClint) {
+    public InvoiceService(OrderRepository orderRepository, ProposalRepository proposalRepository, FlightClient flightClint) {
         this.orderRepository = orderRepository;
+        this.proposalRepository = proposalRepository;
         this.flightClint = flightClint;
     }
 
@@ -37,6 +40,10 @@ public class InvoiceService {
 
         if (Objects.nonNull(ticket.getInvoiceRequest())){
             throw new InvalidInvoiceRequestException("the invoice request has been made");
+        }
+
+        if (Objects.nonNull(proposalRepository.getByOriginTicketId(ticketId))){
+            throw new InvalidInvoiceRequestException("the ticket is rebooked");
         }
 
         return "";

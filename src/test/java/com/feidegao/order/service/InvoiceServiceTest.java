@@ -5,8 +5,10 @@ import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
 import com.feidegao.order.model.InvoiceRequest;
 import com.feidegao.order.model.Order;
+import com.feidegao.order.model.Proposal;
 import com.feidegao.order.model.Ticket;
 import com.feidegao.order.repository.OrderRepository;
+import com.feidegao.order.repository.ProposalRepository;
 import com.feidegao.order.service.exception.InvalidInvoiceRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +30,16 @@ public class InvoiceServiceTest {
     private OrderRepository orderRepository;
 
     @Mock
+    private ProposalRepository proposalRepository;
+
+    @Mock
     private FlightClient flightClint;
 
     private InvoiceService invoiceService;
 
     @BeforeEach
     void setUp() {
-        invoiceService = new InvoiceService(orderRepository, flightClint);
+        invoiceService = new InvoiceService(orderRepository, proposalRepository, flightClint);
     }
 
     @Test
@@ -103,5 +108,25 @@ public class InvoiceServiceTest {
 
         InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
         assertEquals("the invoice request has been made", exception.getMessage());
+    }
+
+    @Test
+    void should_throw_exception_create_invoice_request_for_ticket_which_is_rebooked() {
+        Order order = Order.builder()
+                .id("1")
+                .tickets(List.of(
+                        Ticket.builder().id("1").flightNo("CA111").build()
+                ))
+                .build();
+        when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
+
+        Proposal proposal = Proposal.builder().id("2").originTicketId("1").build();
+        when(proposalRepository.getByOriginTicketId(eq("1"))).thenReturn(proposal);
+
+        Flight flight = Flight.builder().status(FlightStatus.FINISH).build();
+        when(flightClint.getFlight(eq("CA111"))).thenReturn(flight);
+
+        InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
+        assertEquals("the ticket is rebooked", exception.getMessage());
     }
 }
