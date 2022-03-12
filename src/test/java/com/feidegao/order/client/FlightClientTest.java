@@ -33,7 +33,7 @@ public class FlightClientTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void should_return_flight_info() throws JsonProcessingException {
+    public void should_return_flight_info_when_flight_is_in_flight() throws JsonProcessingException {
         this.server.expect(requestTo("/flights/1"))
                 .andRespond(withSuccess(
                         objectMapper.writeValueAsString(FlightResponse.builder().status("IN_FLIGHT").build()), MediaType.APPLICATION_JSON));
@@ -41,5 +41,16 @@ public class FlightClientTest {
         Flight flight = flightClint.getFlight("1");
 
         assertEquals(Flight.builder().status(FlightStatus.IN_FLIGHT).build(), flight);
+    }
+
+    @Test
+    public void should_return_flight_info_when_flight_is_ready() throws JsonProcessingException {
+        this.server.expect(requestTo("/flights/1"))
+                .andRespond(withSuccess(
+                        objectMapper.writeValueAsString(FlightResponse.builder().status("READY").build()), MediaType.APPLICATION_JSON));
+
+        Flight flight = flightClint.getFlight("1");
+
+        assertEquals(Flight.builder().status(FlightStatus.READY).build(), flight);
     }
 }
