@@ -71,4 +71,19 @@ public class InvoiceServiceTest {
         InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
         assertEquals("the flight is in-flight", exception.getMessage());
     }
+
+    @Test
+    void should_throw_exception_create_invoice_request_for_flight_which_has_not_taken_off() {
+        Order order = Order.builder()
+                .id("1")
+                .tickets(List.of(Ticket.builder().id("1").flightNo("CA111").build()))
+                .build();
+        when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
+
+        Flight flight = Flight.builder().status(FlightStatus.READY).build();
+        when(flightClint.getFlight(eq("CA111"))).thenReturn(flight);
+
+        InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1"));
+        assertEquals("the flight has not taken off", exception.getMessage());
+    }
 }

@@ -32,9 +32,16 @@ public class InvoiceService {
         Ticket ticket = order.getTickets().stream().filter(t -> t.getId().equals(ticketId)).findFirst().orElseThrow(
                 () -> new InvalidInvoiceRequestException("the ticket is not existed")
         );
-        Flight flight = flightClint.getFlight(ticket.getFlightNo());
+        checkFlightStatus(ticket.getFlightNo());
+        return "";
+    }
+
+    private void checkFlightStatus(String flightNo){
+        Flight flight = flightClint.getFlight(flightNo);
         if (flight.getStatus().equals(FlightStatus.IN_FLIGHT))
             throw new InvalidInvoiceRequestException("the flight is in-flight");
-        return "";
+
+        if (flight.getStatus().equals(FlightStatus.READY))
+            throw new InvalidInvoiceRequestException("the flight has not taken off");
     }
 }
