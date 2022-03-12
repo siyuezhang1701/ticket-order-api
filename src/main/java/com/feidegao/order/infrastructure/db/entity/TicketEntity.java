@@ -1,4 +1,4 @@
-package com.feidegao.order.entity;
+package com.feidegao.order.infrastructure.db.entity;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamoDBDocument
-public class InvoiceRequestEntity {
+public class TicketEntity {
 
     private String id;
+    private String flightNo;
+    private InvoiceRequestEntity invoiceRequest;
 }

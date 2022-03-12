@@ -1,4 +1,4 @@
-package com.feidegao.order.client;
+package com.feidegao.order.infrastructure.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

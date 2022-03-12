@@ -1,4 +1,4 @@
-package com.feidegao.order.repository;
+package com.feidegao.order.infrastructure.db;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

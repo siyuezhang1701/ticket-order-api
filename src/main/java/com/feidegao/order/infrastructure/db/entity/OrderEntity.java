@@ -1,4 +1,4 @@
-package com.feidegao.order.entity;
+package com.feidegao.order.infrastructure.db.entity;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;

@@ -1,12 +1,13 @@
-package com.feidegao.order.repository;
+package com.feidegao.order.infrastructure.db;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.feidegao.order.entity.InvoiceRequestEntity;
-import com.feidegao.order.entity.OrderEntity;
-import com.feidegao.order.entity.TicketEntity;
+import com.feidegao.order.infrastructure.db.entity.InvoiceRequestEntity;
+import com.feidegao.order.infrastructure.db.entity.OrderEntity;
+import com.feidegao.order.infrastructure.db.entity.TicketEntity;
 import com.feidegao.order.model.InvoiceRequest;
 import com.feidegao.order.model.Order;
 import com.feidegao.order.model.Ticket;
+import com.feidegao.order.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class OrderRepositoryTest extends BaseRepoIntegrationTest {
 
     @BeforeEach
     public void setUpData() {
-        createOrderTable();
+        createTable(OrderEntity.class);
     }
 
     @Test
