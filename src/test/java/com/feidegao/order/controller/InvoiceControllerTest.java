@@ -3,6 +3,7 @@ package com.feidegao.order.controller;
 import com.feidegao.order.controller.resource.InvoiceRequestResource;
 import com.feidegao.order.service.InvoiceService;
 import com.feidegao.order.service.exception.InvalidInvoiceRequestException;
+import com.feidegao.order.service.exception.MQMessageFailedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -98,5 +99,16 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/ticketOrders/1/tickets/1/invoiceRequest"));
+    }
+
+    @Test
+    void should_return_500_when_push_mq_message_failed() throws Exception {
+        doThrow(new MQMessageFailedException("MQ is unreachable")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"), eq("title"));
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest",
+                InvoiceRequestResource.builder().title("title").build()
+        )
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("MQ is unreachable"));
     }
 }
