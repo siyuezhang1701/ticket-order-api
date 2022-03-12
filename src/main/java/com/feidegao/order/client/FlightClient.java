@@ -2,6 +2,6 @@ package com.feidegao.order.client;
 
 import com.feidegao.order.model.Flight;
 
-public interface FlightClint {
+public interface FlightClient {
     Flight getFlight(String flightNo);
 }

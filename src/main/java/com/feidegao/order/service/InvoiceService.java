@@ -1,6 +1,6 @@
 package com.feidegao.order.service;
 
-import com.feidegao.order.client.FlightClint;
+import com.feidegao.order.client.FlightClient;
 import com.feidegao.order.model.Flight;
 import com.feidegao.order.model.FlightStatus;
 import com.feidegao.order.model.Order;
@@ -16,9 +16,9 @@ public class InvoiceService {
 
     private final OrderRepository orderRepository;
 
-    private final FlightClint flightClint;
+    private final FlightClient flightClint;
 
-    public InvoiceService(OrderRepository orderRepository, FlightClint flightClint) {
+    public InvoiceService(OrderRepository orderRepository, FlightClient flightClint) {
         this.orderRepository = orderRepository;
         this.flightClint = flightClint;
     }
