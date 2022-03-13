@@ -2,6 +2,7 @@ package com.feidegao.order.infrastructure.db;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.feidegao.order.entity.InsuranceRequestEntity;
 import com.feidegao.order.entity.TicketEntity;
 import com.feidegao.order.entity.OrderEntity;
 import com.feidegao.order.entity.InvoiceRequestEntity;
@@ -36,7 +37,7 @@ class InvoiceRepositoryImplTest extends BaseIntegrationTest {
                 .tickets(List.of(TicketEntity.builder()
                         .flightNo("A111")
                         .amount(900f)
-                        .insuranceAmount(100f)
+                        .insuranceRequest(InsuranceRequestEntity.builder().amount(100f).build())
                         .id("1")
                         .build()))
                 .build());

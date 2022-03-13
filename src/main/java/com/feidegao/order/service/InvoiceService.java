@@ -1,6 +1,5 @@
 package com.feidegao.order.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
 import com.feidegao.order.service.exception.MQMessageFailedException;
@@ -54,7 +53,7 @@ public class InvoiceService {
         }
         String callback = String.format("/orders/%s/tickets/%s/invoiceRequest/confirmation", ticketId, orderId);
         try {
-            invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceAmount(), callback);
+            invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceRequest().getAmount(), callback);
         } catch (Exception exception) {
             throw new MQMessageFailedException(exception.getMessage());
         }

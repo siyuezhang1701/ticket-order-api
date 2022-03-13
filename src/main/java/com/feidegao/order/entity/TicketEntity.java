@@ -17,5 +17,5 @@ public class TicketEntity {
     private String flightNo;
     private InvoiceRequestEntity invoiceRequest;
     private float amount;
-    private float insuranceAmount;
+    private InsuranceRequestEntity insuranceRequest;
 }

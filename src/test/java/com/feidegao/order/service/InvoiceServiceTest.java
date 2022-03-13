@@ -1,6 +1,7 @@
 package com.feidegao.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.feidegao.order.model.InsuranceRequest;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
 import com.feidegao.order.service.exception.MQMessageFailedException;
@@ -148,7 +149,7 @@ public class InvoiceServiceTest {
         Order order = Order.builder()
                 .id("1")
                 .tickets(List.of(
-                        Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceAmount(100).build()
+                        Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceRequest(InsuranceRequest.builder().amount(100f).build()).build()
                 ))
                 .build();
         when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
@@ -173,7 +174,7 @@ public class InvoiceServiceTest {
         Order order = Order.builder()
                 .id("1")
                 .tickets(List.of(
-                        Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceAmount(100).build()
+                        Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceRequest(InsuranceRequest.builder().amount(100f).build()).build()
                 ))
                 .build();
         when(orderRepository.getOrderById(eq("1"))).thenReturn(order);

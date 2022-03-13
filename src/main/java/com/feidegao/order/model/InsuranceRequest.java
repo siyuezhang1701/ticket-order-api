@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ticket {
+public class InsuranceRequest {
     private String id;
-    private String flightNo;
-    private InvoiceRequest invoiceRequest;
     private float amount;
-    private InsuranceRequest insuranceRequest;
 }
