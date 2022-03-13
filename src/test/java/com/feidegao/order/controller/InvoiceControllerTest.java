@@ -91,6 +91,18 @@ public class InvoiceControllerTest extends BaseControllerIntegrationTest{
     }
 
     @Test
+    void should_return_400_when_request_invoice_for_order_which_is_not_payed() throws Exception {
+        doThrow(new InvalidInvoiceRequestException("the order has not been payed")).when(mockInvoiceService).requestInvoice(eq("1"), eq("1"), eq("title"));
+
+        performPost(
+                "/ticketOrders/1/tickets/1/invoiceRequest",
+                InvoiceRequestResource.builder().title("title").build()
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("the order has not been payed"));
+    }
+
+    @Test
     void should_return_200_and_uri_when_request_invoice_for_ticket_successfully() throws Exception {
         when(mockInvoiceService.requestInvoice(eq("1"), eq("1"), eq("title"))).thenReturn("1");
         performPost(
