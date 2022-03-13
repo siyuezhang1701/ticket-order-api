@@ -51,6 +51,11 @@ public class InvoiceService {
         if (Objects.nonNull(proposalRepository.getByOriginTicketId(ticketId))){
             throw new InvalidInvoiceRequestException("the ticket is rebooked");
         }
+
+        if (Objects.isNull(order.getPaymentRequest().getConfirmation())){
+            throw new InvalidInvoiceRequestException("the order has not been payed");
+        }
+
         String callback = String.format("/orders/%s/tickets/%s/invoiceRequest/confirmation", ticketId, orderId);
         try {
             invoiceQueueClient.pushRequest(title, ticket.getAmount() + ticket.getInsuranceRequest().getAmount(), callback);

@@ -2,6 +2,8 @@ package com.feidegao.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.feidegao.order.model.InsuranceRequest;
+import com.feidegao.order.model.PaymentConfirmation;
+import com.feidegao.order.model.PaymentRequest;
 import com.feidegao.order.mqclient.InvoiceQueueClient;
 import com.feidegao.order.repository.InvoiceRepository;
 import com.feidegao.order.service.exception.MQMessageFailedException;
@@ -145,12 +147,33 @@ public class InvoiceServiceTest {
     }
 
     @Test
+    void should_throw_exception_create_invoice_request_for_order_which_is_not_payed() {
+        Order order = Order.builder()
+                .id("1")
+                .tickets(List.of(
+                        Ticket.builder().id("1").flightNo("CA111").build()
+                ))
+                .paymentRequest(PaymentRequest.builder().build())
+                .build();
+        when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
+
+        when(proposalRepository.getByOriginTicketId(eq("1"))).thenReturn(null);
+
+        Flight flight = Flight.builder().status(FlightStatus.FINISH).build();
+        when(flightClint.getFlight(eq("CA111"))).thenReturn(flight);
+
+        InvalidInvoiceRequestException exception = assertThrows(InvalidInvoiceRequestException.class, () -> invoiceService.requestInvoice("1", "1", "title"));
+        assertEquals("the order has not been payed", exception.getMessage());
+    }
+
+    @Test
     void should_return_invoice_request_when_create_successfully() throws JsonProcessingException {
         Order order = Order.builder()
                 .id("1")
                 .tickets(List.of(
                         Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceRequest(InsuranceRequest.builder().amount(100f).build()).build()
                 ))
+                .paymentRequest(PaymentRequest.builder().confirmation(PaymentConfirmation.builder().build()).build())
                 .build();
         when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
         when(proposalRepository.getByOriginTicketId(eq("1"))).thenReturn(null);
@@ -176,6 +199,7 @@ public class InvoiceServiceTest {
                 .tickets(List.of(
                         Ticket.builder().id("1").flightNo("CA111").amount(900).insuranceRequest(InsuranceRequest.builder().amount(100f).build()).build()
                 ))
+                .paymentRequest(PaymentRequest.builder().confirmation(PaymentConfirmation.builder().build()).build())
                 .build();
         when(orderRepository.getOrderById(eq("1"))).thenReturn(order);
         when(proposalRepository.getByOriginTicketId(eq("1"))).thenReturn(null);
