@@ -19,4 +19,6 @@ public class OrderEntity {
     private String id;
 
     private List<TicketEntity> tickets;
+
+    private PaymentRequestEntity paymentRequest;
 }
